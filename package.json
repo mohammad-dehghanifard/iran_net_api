@@ -1,0 +1,17 @@
+{
+  "name": "iran_net_api",
+  "version": "1.0.0",
+  "description": "Internet package API content management system developed with NodeJS and MySQL database",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mohammad dehghanifard",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.3",
+    "mysql": "^2.18.1"
+  }
+}
