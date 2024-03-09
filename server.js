@@ -1,6 +1,7 @@
 const myDb = require("./core/config/db_config")
 const express = require("express")
 const bodyParser = require("body-parser")
+const route = require("./core/routes/admin_panel")
 
 const server = express()
 
