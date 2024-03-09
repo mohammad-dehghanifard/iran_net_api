@@ -20,25 +20,32 @@ class User {
         }
     }
 
-    async registerUser(inputUsername,firstname,lastname,profile,charge,phone) {
-      try {
-          const queryForCheckUsername =("SELECT * FROM users WHERE username =" + myDb.escape(inputUsername))
-           await  myDb.query(queryForCheckUsername,(error,result) =>{
-               console.log(result)
-               if(result.length !== []){
-                   console.log("کاربری با این نام کاربری در حال حاضر وجود دارد")
-               } else {
-                   console.log("user registered....")
-               }
-          })
+    async registerUser(inputUsername, firstname, lastname, profile, charge, phone) {
+        try {
+            const queryForCheckUsername = "SELECT * FROM users WHERE username = ?";
+            const result = await new Promise((resolve, reject) => {
+                myDb.query(queryForCheckUsername, [inputUsername], (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
 
-
-      } catch (e) {
-          console.log("Error: ",e.message)
-      }
-
-
+            if (result.length > 0) {
+                return false;
+            } else {
+                console.log("user register");
+                return true;
+            }
+        } catch (error) {
+            console.log("خطا: ", error.message);
+            throw error;
+        }
     }
+
+
 
 }
 

@@ -15,12 +15,21 @@ exports.testRegister = async (req,res) => {
     const username = req.body.username
 
     const user = new User()
-    const myuser = await user.registerUser(username)
-    console.log(username)
-    res.status(200).json(
-        {
-            "message" : "succes",
-            "user" : myuser
-        }
-    )
+    const userExists  = await user.registerUser(username)
+    if(userExists === true){
+        res.status(200).json(
+            {
+                "message" : "ثبت نام با موفقیت انجام شد",
+                "success" : userExists
+            }
+        )
+    } else {
+        res.status(400).json(
+            {
+                "message" : "این نام کاربری قبلا ثبت شده است",
+                "success" : userExists
+            }
+        )
+    }
+
 }
