@@ -19,6 +19,29 @@ class User {
             throw error;
         }
     }
+
+    async registerUser(inputUsername,firstname,lastname,profile,charge,phone) {
+      try {
+          const queryForCheckUsername =("SELECT * FROM users WHERE username =" + myDb.escape(inputUsername))
+           await  myDb.query(queryForCheckUsername,(error,result) =>{
+               console.log(result)
+               if(result.length !== []){
+                   console.log("کاربری با این نام کاربری در حال حاضر وجود دارد")
+               } else {
+                   console.log("user registered....")
+               }
+          })
+
+
+      } catch (e) {
+          console.log("Error: ",e.message)
+      }
+
+
+    }
+
 }
+
+
 
 module.exports = User

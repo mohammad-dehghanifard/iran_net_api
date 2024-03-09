@@ -10,3 +10,17 @@ exports.getAllUser =  async (req,res) => {
         }
     )
 }
+
+exports.testRegister = async (req,res) => {
+    const username = req.body.username
+
+    const user = new User()
+    const myuser = await user.registerUser(username)
+    console.log(username)
+    res.status(200).json(
+        {
+            "message" : "succes",
+            "user" : myuser
+        }
+    )
+}
