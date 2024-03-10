@@ -1,4 +1,5 @@
 const User = require("../models/user")
+const hashPassword = require("password-hash")
 
 exports.getAllUser =  async (req,res) => {
     const user = new User()
@@ -12,10 +13,28 @@ exports.getAllUser =  async (req,res) => {
 }
 
 exports.testRegister = async (req,res) => {
-    const username = req.body.username
 
+    const userInputInfo = {
+        "username":  req.body.username,
+        "password":  req.body.password,
+        "firstname":  req.body.firstname,
+        "lastname":  req.body.lastname,
+        "profile": req.body.profile,
+        "phone": req.body.phone,
+        "charge": 3000,
+    }
+    const hashPass = hashPassword.generate(userInputInfo.password)
+    console.log(userInputInfo)
     const user = new User()
-    const userExists  = await user.registerUser(username)
+    const userExists  = await user.registerUser(
+        userInputInfo.username,
+        hashPass,
+        userInputInfo.firstname,
+        userInputInfo.lastname,
+        userInputInfo.profile,
+        userInputInfo.charge,
+        userInputInfo.phone
+    )
     if(userExists === true){
         res.status(200).json(
             {

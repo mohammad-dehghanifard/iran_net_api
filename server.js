@@ -5,6 +5,7 @@ const adminPanelRoutes = require("./core/routes/admin_panel")
 
 const server = express()
 
+
 server.use(bodyParser.json())
 
 

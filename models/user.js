@@ -1,4 +1,5 @@
 const myDb = require("../core/config/db_config")
+const e = require("express");
 
 class User {
     async fetchAll() {
@@ -20,7 +21,7 @@ class User {
         }
     }
 
-    async registerUser(inputUsername, firstname, lastname, profile, charge, phone) {
+    async registerUser(inputUsername,password,firstname, lastname, profile, charge, phone) {
         try {
             const queryForCheckUsername = "SELECT * FROM users WHERE username = ?";
             const result = await new Promise((resolve, reject) => {
@@ -36,11 +37,20 @@ class User {
             if (result.length > 0) {
                 return false;
             } else {
-                console.log("user register");
+                const user = {
+                    firstname : firstname,
+                    lastname : lastname,
+                    profile : profile,
+                    charge : charge,
+                    phone : phone,
+                    username : inputUsername,
+                    password : password
+                }
+                await  myDb.query("INSERT INTO users SET ?",user)
                 return true;
             }
         } catch (error) {
-            console.log("خطا: ", error.message);
+            console.log("Error : ", error.message);
             throw error;
         }
     }
