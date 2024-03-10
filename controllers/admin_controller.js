@@ -1,6 +1,5 @@
 const User = require("../models/user")
-const hashPassword = require("password-hash")
-const jwt = require("jsonwebtoken")
+
 
 exports.getAllUser =  async (req,res) => {
     const user = new User()

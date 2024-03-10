@@ -1,5 +1,6 @@
 const myDb = require("../core/config/db_config")
 const e = require("express");
+const hashPassword = require("password-hash");
 
 class User {
     async fetchAll() {
@@ -23,7 +24,7 @@ class User {
 
     async registerUser(inputUsername,password,firstname, lastname, profile, charge, phone) {
         try {
-            const queryForCheckUsername = "SELECT * FROM users WHERE username = ?";
+            const queryForCheckUsername = "SELECT * FROM users WHERE username = ? LIMIT 1";
             const result = await new Promise((resolve, reject) => {
                 myDb.query(queryForCheckUsername, [inputUsername], (error, result) => {
                     if (error) {
@@ -55,7 +56,24 @@ class User {
         }
     }
 
-
+    async userLogin(username,password) {
+        try {
+            const query = "SELECT * FROM users WHERE username = ? LIMIT 1"
+            return await new Promise(
+                (resolve, reject) => {
+                    myDb.query(query, [username], (error, user) => {
+                        if (error) {
+                            reject(error)
+                        } else {
+                            resolve(hashPassword.verify(password, user[0].password))
+                        }
+                    })
+                }
+            )
+        } catch (e) {
+            console.log(`Error : ${e.message}`)
+        }
+    }
 
 }
 

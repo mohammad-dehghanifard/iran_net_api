@@ -50,3 +50,13 @@ exports.userRegister = async (req, res) => {
     }
 
 }
+
+exports.login = async  (req,res) => {
+    const user = new User()
+    const userInput = {
+        username:  req.body.username,
+        password : req.body.password
+    }
+    const result = await user.userLogin(userInput.username,userInput.password)
+    console.log(result)
+}
