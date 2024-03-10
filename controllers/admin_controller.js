@@ -1,5 +1,6 @@
 const User = require("../models/user")
 const hashPassword = require("password-hash")
+const jwt = require("jsonwebtoken")
 
 exports.getAllUser =  async (req,res) => {
     const user = new User()
@@ -26,6 +27,7 @@ exports.testRegister = async (req,res) => {
     const hashPass = hashPassword.generate(userInputInfo.password)
     console.log(userInputInfo)
     const user = new User()
+
     const userExists  = await user.registerUser(
         userInputInfo.username,
         hashPass,
@@ -35,11 +37,18 @@ exports.testRegister = async (req,res) => {
         userInputInfo.charge,
         userInputInfo.phone
     )
+
     if(userExists === true){
+        const token = jwt.sign(
+            {username : userInputInfo.username,firstname:userInputInfo.firstname,lastname: userInputInfo.lastname,phone:userInputInfo.phone},
+            "pkcs8",
+            { expiresIn: "48h"}
+        )
         res.status(200).json(
             {
                 "message" : "ثبت نام با موفقیت انجام شد",
-                "success" : userExists
+                "token" : token,
+                "success" : userExists,
             }
         )
     } else {
