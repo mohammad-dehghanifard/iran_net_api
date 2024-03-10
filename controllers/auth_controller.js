@@ -58,5 +58,19 @@ exports.login = async  (req,res) => {
         password : req.body.password
     }
     const result = await user.userLogin(userInput.username,userInput.password)
-    console.log(result)
+
+    if(result) {
+        const token = jwt.sign({username : userInput.username},"pkcs8",{expiresIn: "48h"})
+        res.status(200).json({
+            "message" : "با موفقیت وارد شدید",
+            "token" : token,
+            "success" : result
+        })
+    } else {
+        res.status(400).json({
+            "message" : "نام کاربری یا رمز عبور وارد شده اشتباه است!",
+            "success" : result
+        })
+    }
+
 }
